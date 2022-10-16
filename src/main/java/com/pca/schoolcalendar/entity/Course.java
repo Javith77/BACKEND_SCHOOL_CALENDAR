@@ -24,5 +24,5 @@ public class Course {
     private String description;
 
     @Column(name = "hours")
-    private Integer hours;
+    private Double hours;
 }
