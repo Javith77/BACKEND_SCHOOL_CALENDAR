@@ -1,8 +1,14 @@
 package com.pca.schoolcalendar.dto;
 
-import javax.validation.constraints.*;
-import java.util.Calendar;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.*;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class CourseDTO {
 
     private Integer id;
