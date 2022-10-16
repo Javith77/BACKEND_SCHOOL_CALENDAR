@@ -3,7 +3,7 @@ CREATE SCHEMA `schoolcalendar` ;
 CREATE TABLE `schoolcalendar`.`course` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `description` VARCHAR(45) NOT NULL,
-  `hours` INT NOT NULL,
+  `hours` DECIMAL NOT NULL,
   PRIMARY KEY (`id`));
 
 CREATE TABLE `schoolcalendar`.`teacher` (
