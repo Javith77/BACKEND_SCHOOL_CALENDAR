@@ -4,8 +4,10 @@ import com.pca.schoolcalendar.dto.StudentDTO;
 import com.pca.schoolcalendar.entity.Student;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.stereotype.Component;
 
 @AllArgsConstructor
+@Component
 public class StudentMapper {
 
     private final ModelMapper modelmapper;

@@ -16,12 +16,13 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Service
 @AllArgsConstructor
+@Service
 public class StudentImpl implements IStudentService {
 
     private final StudentRepository studentRepository;
     private final StudentMapper studentMapper;
+    private static final String RESOURCE_NAME = "Student";
 
     @Override
     public MessageResponse save(StudentDTO StudentDTO) {
@@ -35,7 +36,7 @@ public class StudentImpl implements IStudentService {
     public MessageResponse update(Integer id, StudentDTO studentDto) {
         Optional<Student> student = studentRepository.findById(id);
         if(student.isEmpty()){
-            throw new ResourceNotFoundException("Student", "id", id);
+            throw new ResourceNotFoundException(RESOURCE_NAME, "id", id);
         }
         //update data
         student.get().setName(studentDto.getName());
@@ -49,14 +50,14 @@ public class StudentImpl implements IStudentService {
 
     @Override
     public MessageResponse delete(Integer id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", id));
         studentRepository.delete(student);
         return new MessageResponse(HttpStatus.OK.value(), new Date(), "Registro eliminado con éxito", studentMapper.mapToDto(student));
     }
 
     @Override
     public StudentDTO findById(Integer id) {
-        Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Student", "id", id));
+        Student student = studentRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", id));
         //convert entity to dto and return
         return studentMapper.mapToDto(student);
     }
