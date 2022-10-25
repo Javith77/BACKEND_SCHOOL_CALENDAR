@@ -31,8 +31,9 @@ CREATE TABLE `schoolcalendar`.`student` (
   `last_name` VARCHAR(45) NOT NULL,
   `genre` VARCHAR(45) NOT NULL,
   `address` VARCHAR(45) NULL,
-  `date_of_birth` VARCHAR(45) NULL,
-  PRIMARY KEY (`id`));
+  `fk_id_course` INT NOT NULL,
+  PRIMARY KEY (`id`),
+  FOREIGN KEY (`fk_id_student`) REFERENCES `schoolcalendar`.`student` (`id`));
 
 CREATE TABLE `schoolcalendar`.`course_academic_subject` (
   `id` INT NOT NULL AUTO_INCREMENT,
@@ -42,12 +43,12 @@ CREATE TABLE `schoolcalendar`.`course_academic_subject` (
   FOREIGN KEY (`fk_id_course`) REFERENCES `schoolcalendar`.`course` (`id`),
   FOREIGN KEY (`fk_id_academic_subject`) REFERENCES `schoolcalendar`.`academic_subject` (`id`));
 
-  CREATE TABLE `schoolcalendar`.`course_student` (
-    `id` INT NOT NULL AUTO_INCREMENT,
-    `fk_id_course` INT NOT NULL,
-    `fk_id_student` INT NOT NULL,
-  PRIMARY KEY (`id`),FERENCES `schoolcalendar`.`course` (`id`),
-  FOREIGN KEY (`fk_id_student`) REFERENCES `schoolcalendar`.`student` (`id`));
+  -- CREATE TABLE `schoolcalendar`.`course_student` (
+  --   `id` INT NOT NULL AUTO_INCREMENT,
+  --   `fk_id_course` INT NOT NULL,
+  --   `fk_id_student` INT NOT NULL,
+  -- PRIMARY KEY (`id`),FERENCES `schoolcalendar`.`course` (`id`),
+  -- FOREIGN KEY (`fk_id_student`) REFERENCES `schoolcalendar`.`student` (`id`));
 
 CREATE TABLE `schoolcalendar`.`academic_subject_teacher` (
   `id` INT NOT NULL AUTO_INCREMENT,
