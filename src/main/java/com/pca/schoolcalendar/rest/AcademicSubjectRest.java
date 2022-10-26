@@ -1,7 +1,6 @@
 package com.pca.schoolcalendar.rest;
 
 import com.pca.schoolcalendar.dto.AcademicSubjectDTO;
-import com.pca.schoolcalendar.dto.AssignmentsDTO;
 import com.pca.schoolcalendar.response.MessageResponse;
 import com.pca.schoolcalendar.service.IAcademicSubjectService;
 import lombok.AllArgsConstructor;
@@ -37,6 +36,11 @@ public class AcademicSubjectRest {
     @GetMapping
     public ResponseEntity<List<AcademicSubjectDTO>> findAll(){
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
+    }
+
+    @GetMapping("/assigned/teacher")
+    public ResponseEntity<List<AcademicSubjectDTO>> findAllWithTeacherAssigned(){
+        return new ResponseEntity<>(service.findAllWithTeacherAssigned(), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")

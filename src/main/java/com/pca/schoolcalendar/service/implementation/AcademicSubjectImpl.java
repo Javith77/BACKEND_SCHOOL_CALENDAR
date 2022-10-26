@@ -75,6 +75,16 @@ public class AcademicSubjectImpl implements IAcademicSubjectService {
     }
 
     @Override
+    public List<AcademicSubjectDTO> findAllWithTeacherAssigned() {
+        List<AcademicSubject> academicSubject = academicSubjectRepository.findAllByTeachersNotNull();
+        //convert list entity to dto
+        return academicSubject.stream()
+                .distinct()
+                .map(academicSubjectMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
     public List<AcademicSubjectDTO> findAll() {
         List<AcademicSubject> academicSubject = (List<AcademicSubject>) academicSubjectRepository.findAll();
         //convert list entity to dto

@@ -1,6 +1,5 @@
 package com.pca.schoolcalendar.service;
 
-import com.pca.schoolcalendar.dto.AssignmentsDTO;
 import com.pca.schoolcalendar.dto.AcademicSubjectDTO;
 import com.pca.schoolcalendar.response.MessageResponse;
 
@@ -15,6 +14,8 @@ public interface IAcademicSubjectService {
     MessageResponse delete(Integer id);
 
     AcademicSubjectDTO findById(Integer id);
+
+    List<AcademicSubjectDTO>  findAllWithTeacherAssigned();
 
     List<AcademicSubjectDTO>  findAll();
 }

@@ -23,6 +23,9 @@ public class AcademicSubject {
     @Column(name = "description")
     private String description;
 
+    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "academicSubjects")
+    private List<Teacher> teachers;
+
 //    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "academicSubjects")
 //    private List<Course> courses;
 }
