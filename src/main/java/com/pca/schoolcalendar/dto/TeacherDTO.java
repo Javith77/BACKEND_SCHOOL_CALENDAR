@@ -6,9 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.time.LocalDate;
 
 @Data
 @AllArgsConstructor
@@ -37,8 +35,5 @@ public class TeacherDTO {
 
     @NotEmpty @Size(max = 45)
     private String academicLevel;
-
-    @NotNull
-    private LocalDate dateOfBirth;
 
 }

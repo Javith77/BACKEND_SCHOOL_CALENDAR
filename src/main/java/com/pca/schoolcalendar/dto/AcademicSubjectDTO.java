@@ -1,6 +1,6 @@
 package com.pca.schoolcalendar.dto;
 
-import com.pca.schoolcalendar.entity.Student;
+import com.pca.schoolcalendar.entity.Course;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -12,15 +12,14 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CourseDTO {
+public class AcademicSubjectDTO {
 
     private Integer id;
 
-    @NotEmpty @Size(max = 45)
+    @NotEmpty
+    @Size(min = 2, max = 45)
     private String description;
 
-    private List<StudentDTO> students;
-
-    private List<AcademicSubjectDTO> academicSubjects;
+    private List<Course> courses;
 
 }

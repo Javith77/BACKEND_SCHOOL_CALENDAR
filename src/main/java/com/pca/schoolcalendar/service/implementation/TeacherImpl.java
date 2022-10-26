@@ -43,14 +43,13 @@ public class TeacherImpl implements ITeacherService {
             throw new ResourceNotFoundException(RESOURCE_NAME, "id", id);
         }
         //update data
+        teacher.get().setTypeDocument(teacherDto.getTypeDocument());
+        teacher.get().setDocument(teacherDto.getDocument());
         teacher.get().setName(teacherDto.getName());
         teacher.get().setLastName(teacherDto.getLastName());
         teacher.get().setGenre(teacherDto.getGenre());
-        teacher.get().setDocument(teacherDto.getDocument());
-        teacher.get().setTypeDocument(teacherDto.getTypeDocument());
         teacher.get().setAddress(teacherDto.getAddress());
         teacher.get().setAcademicLevel(teacherDto.getAcademicLevel());
-        teacher.get().setDateOfBirth(teacherDto.getDateOfBirth());
         //save data
         teacherRepository.save(teacher.get());
         return new MessageResponse(HttpStatus.CREATED.value(), new Date(), "Registro actualizado con éxito", teacherMapper.mapToDto(teacher.get()));

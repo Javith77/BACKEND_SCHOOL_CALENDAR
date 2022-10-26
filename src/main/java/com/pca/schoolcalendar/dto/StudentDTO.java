@@ -5,9 +5,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import java.util.Calendar;
 
 @Data
 @AllArgsConstructor
@@ -16,15 +14,21 @@ public class StudentDTO {
 
     private Integer id;
 
+    @NotEmpty @Size(max = 45)
+    private String typeDocument;
+
+    @NotEmpty @Size(max = 45)
+    private String document;
+
     @NotEmpty @Size(min = 5, max = 45)
     private String name;
 
     @NotEmpty @Size(min = 5, max = 45)
     private String lastName;
 
-    private String address;
+    @NotEmpty
+    private String genre;
 
-    @NotNull
-    private Calendar dateOfBirth;
+    private String address;
 
 }

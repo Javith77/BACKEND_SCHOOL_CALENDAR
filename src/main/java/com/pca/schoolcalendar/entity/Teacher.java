@@ -45,7 +45,4 @@ public class Teacher {
     @Column(name = "academic_level")
     private String academicLevel;
 
-    @Column(name = "date_of_birth")
-    private LocalDate dateOfBirth;
-
 }

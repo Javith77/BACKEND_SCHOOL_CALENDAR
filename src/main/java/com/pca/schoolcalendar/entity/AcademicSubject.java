@@ -9,12 +9,12 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity
-@Table(name = "course")
+@Table(name = "academic_subject")
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Course {
+public class AcademicSubject {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,9 +24,9 @@ public class Course {
     @Column(name = "description")
     private String description;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
-    private List<Student> students;
-
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "courses")
-    private List<AcademicSubject> academicSubjects;
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(name = "course_academic_subject",
+            joinColumns = @JoinColumn(name = "fk_id_academic_subject", nullable = false),
+            inverseJoinColumns = @JoinColumn(name="fk_id_course", nullable = false))
+    private List<Course> courses;
 }
