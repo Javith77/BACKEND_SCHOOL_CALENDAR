@@ -1,5 +1,6 @@
 package com.pca.schoolcalendar.entity;
 
+import com.pca.schoolcalendar.dto.AcademicSubjectDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,6 +11,7 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.List;
 
 @Entity
 @Table(name = "teacher")
@@ -44,5 +46,11 @@ public class Teacher {
 
     @Column(name = "academic_level")
     private String academicLevel;
+
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "academic_subject_teacher",
+            joinColumns = @JoinColumn(name = "fk_id_teacher", nullable = false),
+            inverseJoinColumns = @JoinColumn(name="fk_id_academic_subject", nullable = false))
+    private List<AcademicSubject> academicSubjects;
 
 }

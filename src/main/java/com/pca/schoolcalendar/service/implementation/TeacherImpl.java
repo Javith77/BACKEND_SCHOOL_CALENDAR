@@ -1,39 +1,62 @@
 package com.pca.schoolcalendar.service.implementation;
 
+import com.pca.schoolcalendar.dto.AcademicSubjectDTO;
 import com.pca.schoolcalendar.dto.TeacherDTO;
+import com.pca.schoolcalendar.entity.AcademicSubject;
 import com.pca.schoolcalendar.entity.Student;
 import com.pca.schoolcalendar.entity.Teacher;
 import com.pca.schoolcalendar.exception.ResourceNotFoundException;
+import com.pca.schoolcalendar.mapper.AcademicSubjectMapper;
 import com.pca.schoolcalendar.mapper.StudentMapper;
 import com.pca.schoolcalendar.mapper.TeacherMapper;
+import com.pca.schoolcalendar.repository.AcademicSubjectRepository;
 import com.pca.schoolcalendar.repository.StudentRepository;
 import com.pca.schoolcalendar.repository.TeacherRepository;
 import com.pca.schoolcalendar.response.MessageResponse;
 import com.pca.schoolcalendar.service.ITeacherService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Slf4j
 @Service
 public class TeacherImpl implements ITeacherService {
 
     private final TeacherRepository teacherRepository;
+    private final AcademicSubjectRepository academicSubjectRepository;
     private final TeacherMapper teacherMapper;
+    private final AcademicSubjectMapper academicSubjectMapper;
     private static final String RESOURCE_NAME = "Teacher";
 
+    @Transactional
     @Override
     public MessageResponse save(TeacherDTO teacherDto) {
+        List<Integer> ids = teacherDto.getAcademicSubjects().stream()
+                .map(AcademicSubjectDTO::getId)
+                .collect(Collectors.toList());
+
         //convert dto to entity
         Teacher teacher = teacherMapper.mapToEntity(teacherDto);
-        Teacher newTeacher = teacherRepository.save(teacher);
+        teacher.setAcademicSubjects(new ArrayList<>());
+        Teacher teacherSaved = teacherRepository.save(teacher);
+
+        Iterable<AcademicSubject> academicSubjects = academicSubjectRepository.findAllById(ids);
+        //add academic subjects
+        academicSubjects.forEach(academicSubject -> teacher.getAcademicSubjects().add(academicSubject));
+
+        log.info("TEACHER:: ", teacherSaved);
+        teacherRepository.save(teacherSaved);
         return new MessageResponse(HttpStatus.CREATED.value(), new Date(),
-                "Registro guardado con éxito", teacherMapper.mapToDto(newTeacher));
+                "Registro guardado con éxito", teacherMapper.mapToDto(teacherSaved));
     }
 
     @Override
@@ -42,6 +65,16 @@ public class TeacherImpl implements ITeacherService {
         if(teacher.isEmpty()){
             throw new ResourceNotFoundException(RESOURCE_NAME, "id", id);
         }
+        //remove old items
+        teacher.get().setAcademicSubjects(new ArrayList<>());
+        //get ids
+        List<Integer> ids = teacherDto.getAcademicSubjects().stream()
+                .map(AcademicSubjectDTO::getId)
+                .collect(Collectors.toList());
+        //get all academic subjects with ids
+        Iterable<AcademicSubject> academicSubjects = academicSubjectRepository.findAllById(ids);
+        //add new academic subjects
+        academicSubjects.forEach(academicSubject -> teacher.get().getAcademicSubjects().add(academicSubject));
         //update data
         teacher.get().setTypeDocument(teacherDto.getTypeDocument());
         teacher.get().setDocument(teacherDto.getDocument());

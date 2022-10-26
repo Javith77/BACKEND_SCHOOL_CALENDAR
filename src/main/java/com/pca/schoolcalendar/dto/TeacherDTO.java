@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
@@ -35,5 +36,7 @@ public class TeacherDTO {
 
     @NotEmpty @Size(max = 45)
     private String academicLevel;
+
+    private List<AcademicSubjectDTO> academicSubjects;
 
 }
