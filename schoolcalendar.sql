@@ -20,7 +20,6 @@ CREATE TABLE `schoolcalendar`.`teacher` (
   `genre` VARCHAR(45) NOT NULL,
   `address` VARCHAR(45) NULL,
   `academic_level` VARCHAR(45) NOT NULL,
-  `date_of_birth` DATE NULL,
   PRIMARY KEY (`id`));
 
 CREATE TABLE `schoolcalendar`.`student` (
@@ -31,9 +30,9 @@ CREATE TABLE `schoolcalendar`.`student` (
   `last_name` VARCHAR(45) NOT NULL,
   `genre` VARCHAR(45) NOT NULL,
   `address` VARCHAR(45) NULL,
-  `fk_id_course` INT NOT NULL,
+  `fk_id_course` INT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`fk_id_student`) REFERENCES `schoolcalendar`.`student` (`id`));
+  FOREIGN KEY (`fk_id_course`) REFERENCES `schoolcalendar`.`course` (`id`));
 
 CREATE TABLE `schoolcalendar`.`course_academic_subject` (
   `id` INT NOT NULL AUTO_INCREMENT,
