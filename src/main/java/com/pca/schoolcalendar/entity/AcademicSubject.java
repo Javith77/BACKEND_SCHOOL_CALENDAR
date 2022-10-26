@@ -1,17 +1,16 @@
 package com.pca.schoolcalendar.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "academic_subject")
 @Data
 @Builder
+@EqualsAndHashCode
 @NoArgsConstructor
 @AllArgsConstructor
 public class AcademicSubject {
@@ -24,9 +23,6 @@ public class AcademicSubject {
     @Column(name = "description")
     private String description;
 
-    @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "course_academic_subject",
-            joinColumns = @JoinColumn(name = "fk_id_academic_subject", nullable = false),
-            inverseJoinColumns = @JoinColumn(name="fk_id_course", nullable = false))
-    private List<Course> courses;
+//    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "academicSubjects")
+//    private List<Course> courses;
 }

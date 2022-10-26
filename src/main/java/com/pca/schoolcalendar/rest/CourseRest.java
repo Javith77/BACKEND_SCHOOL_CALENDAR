@@ -1,5 +1,6 @@
 package com.pca.schoolcalendar.rest;
 
+import com.pca.schoolcalendar.dto.AssignmentsDTO;
 import com.pca.schoolcalendar.dto.CourseDTO;
 import com.pca.schoolcalendar.response.MessageResponse;
 import com.pca.schoolcalendar.service.ICourseService;
@@ -26,6 +27,11 @@ public class CourseRest {
     @PutMapping("/{id}")
     public ResponseEntity<MessageResponse> update(@PathVariable("id") Integer id, @RequestBody @Valid CourseDTO courseDto){
         return new ResponseEntity<>(service.update(id, courseDto), HttpStatus.CREATED);
+    }
+
+    @PutMapping("/academic-subjects/assignments/{idCourse}")
+    public ResponseEntity<MessageResponse> updateCourseAssignments(@PathVariable("idCourse") Integer id, @RequestBody @Valid List<AssignmentsDTO> assignments){
+        return new ResponseEntity<>(service.updateCourseAssignments(id, assignments), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}")

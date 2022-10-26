@@ -1,28 +1,38 @@
 package com.pca.schoolcalendar.service.implementation;
 
+import com.pca.schoolcalendar.dto.AssignmentsDTO;
 import com.pca.schoolcalendar.dto.CourseDTO;
+import com.pca.schoolcalendar.entity.AcademicSubject;
 import com.pca.schoolcalendar.entity.Course;
 import com.pca.schoolcalendar.exception.ResourceNotFoundException;
+import com.pca.schoolcalendar.mapper.AcademicSubjectMapper;
 import com.pca.schoolcalendar.mapper.CourseMapper;
+import com.pca.schoolcalendar.repository.AcademicSubjectRepository;
 import com.pca.schoolcalendar.repository.CourseRepository;
 import com.pca.schoolcalendar.response.MessageResponse;
 import com.pca.schoolcalendar.service.ICourseService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
+@Slf4j
 @Service
 public class CourseImpl implements ICourseService {
 
-    private CourseRepository courseRepository;
-    private CourseMapper courseMapper;
+    private final CourseRepository courseRepository;
+    private final AcademicSubjectRepository academicSubjectRepository;
+    private final CourseMapper courseMapper;
+    private final AcademicSubjectMapper academicSubjectMapper;
     private static final String RESOURCE_NAME = "Course";
+    private static final String RESOURCE_NAME_ACADEMIC_SUBJECT = "AcademicSubject";
 
     @Override
     public MessageResponse save(CourseDTO courseDto) {
@@ -42,6 +52,26 @@ public class CourseImpl implements ICourseService {
         course.get().setDescription(courseDto.getDescription());
         courseRepository.save(course.get());
         return new MessageResponse(HttpStatus.CREATED.value(), new Date(), "Registro actualizado con éxito", courseMapper.mapToDto(course.get()));
+    }
+
+    @Override
+    public MessageResponse updateCourseAssignments(Integer id,  List<AssignmentsDTO> assignments) {
+        CourseDTO courseDto = this.findById(id);
+        Course course = courseMapper.mapToEntity(courseDto);
+
+        for (AssignmentsDTO ass: assignments) {
+            Optional<AcademicSubject> academicSubjectFound = academicSubjectRepository.findById(ass.getId());
+            if (academicSubjectFound.isEmpty()){
+                throw new ResourceNotFoundException(RESOURCE_NAME_ACADEMIC_SUBJECT, "id", id);
+            }
+
+            course.getAcademicSubjects().remove(academicSubjectFound.get());
+            if (ass.isCheck()){
+                course.getAcademicSubjects().add(academicSubjectFound.get());
+            }
+        }
+        Course courseSaved = courseRepository.save(course);
+        return new MessageResponse(HttpStatus.CREATED.value(), new Date(), "Registros actualizados con éxito", courseSaved.getAcademicSubjects());
     }
 
     @Override

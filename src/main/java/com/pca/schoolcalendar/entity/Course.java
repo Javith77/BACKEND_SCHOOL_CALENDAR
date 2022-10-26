@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -27,6 +28,9 @@ public class Course {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "course")
     private List<Student> students;
 
-    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "courses")
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "course_academic_subject",
+            joinColumns = @JoinColumn(name = "fk_id_course", nullable = false),
+            inverseJoinColumns = @JoinColumn(name="fk_id_academic_subject", nullable = false))
     private List<AcademicSubject> academicSubjects;
 }
