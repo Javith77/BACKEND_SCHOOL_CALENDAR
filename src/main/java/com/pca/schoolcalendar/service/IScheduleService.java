@@ -5,7 +5,7 @@ import com.pca.schoolcalendar.response.MessageResponse;
 
 import java.util.List;
 
-public interface ISchedule {
+public interface IScheduleService {
 
     MessageResponse save(ScheduleDTO scheduleDTO);
 
@@ -13,7 +13,7 @@ public interface ISchedule {
 
     MessageResponse delete(Integer id);
 
-    ScheduleDTO findById(Integer id);
+    List<ScheduleDTO> findAllByIdCourse(Integer idCourse);
 
     List<ScheduleDTO> findAll();
 

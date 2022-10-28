@@ -25,7 +25,6 @@ public class AcademicSubject {
 
     @ManyToMany(fetch = FetchType.LAZY, mappedBy = "academicSubjects")
     private List<Teacher> teachers;
-
 //    @ManyToMany(fetch = FetchType.LAZY, mappedBy = "academicSubjects")
 //    private List<Course> courses;
 }

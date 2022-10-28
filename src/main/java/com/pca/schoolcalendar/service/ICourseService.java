@@ -20,4 +20,6 @@ public interface ICourseService {
 
     List<CourseDTO> findAll();
 
+    List<CourseDTO> findAllWithAcademicSubjectAssign();
+
 }

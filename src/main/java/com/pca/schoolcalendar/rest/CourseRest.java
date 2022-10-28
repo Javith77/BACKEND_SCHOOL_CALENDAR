@@ -44,6 +44,11 @@ public class CourseRest {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/assign/subject-academic")
+    public ResponseEntity<List<CourseDTO>> findAllWithAcademicSubjectAssign(){
+        return new ResponseEntity<>(service.findAllWithAcademicSubjectAssign(), HttpStatus.OK);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<MessageResponse> delete(@PathVariable("id") Integer id){
         return new ResponseEntity<>(service.delete(id), HttpStatus.OK);

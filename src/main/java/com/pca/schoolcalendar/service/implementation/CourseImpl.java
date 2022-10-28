@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -93,6 +92,16 @@ public class CourseImpl implements ICourseService {
         List<Course> courses = (List<Course>) courseRepository.findAll();
         //convert list entity to dto
         return courses.stream()
+                .map(courseMapper::mapToDto)
+                .collect(Collectors.toList());
+    }
+
+    @Override
+    public List<CourseDTO> findAllWithAcademicSubjectAssign() {
+        List<Course> courses = courseRepository.findAllByAcademicSubjectsNotNull();
+        //convert list entity to dto
+        return courses.stream()
+                .distinct()
                 .map(courseMapper::mapToDto)
                 .collect(Collectors.toList());
     }

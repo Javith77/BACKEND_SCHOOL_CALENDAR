@@ -15,7 +15,9 @@ public interface IAcademicSubjectService {
 
     AcademicSubjectDTO findById(Integer id);
 
-    List<AcademicSubjectDTO>  findAllWithTeacherAssigned();
+    List<AcademicSubjectDTO> findAllByIdCourse(Integer idCourse);
+
+    List<AcademicSubjectDTO> findAllWithTeacherAssigned();
 
     List<AcademicSubjectDTO>  findAll();
 }

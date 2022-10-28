@@ -26,7 +26,7 @@ import java.util.stream.Collectors;
 public class AcademicSubjectImpl implements IAcademicSubjectService {
 
     private final AcademicSubjectRepository academicSubjectRepository;
-    private final CourseRepository courseRepository;
+//    private final CourseRepository courseRepository;
     private final AcademicSubjectMapper academicSubjectMapper;
     private static final String RESOURCE_NAME = "AcademicSubject";
     private static final String RESOURCE_NAME_COURSE = "Course";
@@ -72,6 +72,16 @@ public class AcademicSubjectImpl implements IAcademicSubjectService {
                 .orElseThrow(() -> new ResourceNotFoundException(RESOURCE_NAME, "id", id));
         //convert entity to dto and return
         return academicSubjectMapper.mapToDto(academicSubject);
+    }
+
+    @Override
+    public List<AcademicSubjectDTO> findAllByIdCourse(Integer idCourse) {
+        List<AcademicSubject> academicSubject = academicSubjectRepository.findAllByCourseNotNull(idCourse);
+        //convert list entity to dto
+        return academicSubject.stream()
+                .distinct()
+                .map(academicSubjectMapper::mapToDto)
+                .collect(Collectors.toList());
     }
 
     @Override

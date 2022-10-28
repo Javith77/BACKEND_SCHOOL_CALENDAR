@@ -38,6 +38,11 @@ public class AcademicSubjectRest {
         return new ResponseEntity<>(service.findAll(), HttpStatus.OK);
     }
 
+    @GetMapping("/course/{idCourse}")
+    public ResponseEntity<List<AcademicSubjectDTO>> findAllByIdCourse(@PathVariable("idCourse") Integer idCourse){
+        return new ResponseEntity<>(service.findAllByIdCourse(idCourse), HttpStatus.OK);
+    }
+
     @GetMapping("/assigned/teacher")
     public ResponseEntity<List<AcademicSubjectDTO>> findAllWithTeacherAssigned(){
         return new ResponseEntity<>(service.findAllWithTeacherAssigned(), HttpStatus.OK);
