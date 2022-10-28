@@ -62,8 +62,10 @@ CREATE TABLE `schoolcalendar`.`schedule` (
   `start_date` DATETIME NOT NULL,
   `end_date` DATETIME NOT NULL,
   `fk_id_course` INT NOT NULL,
+  `fk_id_academic_subject` INT NOT NULL,
   PRIMARY KEY (`id`),
-  FOREIGN KEY (`fk_id_course`) REFERENCES `schoolcalendar`.`course` (`id`));
+  FOREIGN KEY (`fk_id_course`) REFERENCES `schoolcalendar`.`course` (`id`),
+  FOREIGN KEY (`fk_id_academic_subject`) REFERENCES `schoolcalendar`.`academic_subject` (`id`));
 
 
 -- CREATE TABLE `schoolcalendar`.`schedule_detail` (
