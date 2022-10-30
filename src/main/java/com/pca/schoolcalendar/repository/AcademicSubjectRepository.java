@@ -10,8 +10,8 @@ import java.util.List;
 @Repository
 public interface AcademicSubjectRepository extends CrudRepository<AcademicSubject, Integer> {
 
-    @Query(value = "SELECT * FROM academic_subject acs " +
-            "INNER JOIN course_academic_subject cas ON cas.fk_id_academic_subject = acs.id " +
+    @Query(value = "SELECT * FROM schoolcalendar.academic_subject acs " +
+            "INNER JOIN schoolcalendar.course_academic_subject cas ON cas.fk_id_academic_subject = acs.id " +
             "WHERE cas.fk_id_course = ?1",
     nativeQuery = true)
     List<AcademicSubject> findAllByCourseNotNull(Integer idCourse);

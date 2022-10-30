@@ -20,10 +20,10 @@ public class StudentDTO {
     @NotEmpty @Size(max = 45)
     private String document;
 
-    @NotEmpty @Size(min = 5, max = 45)
+    @NotEmpty @Size(max = 45)
     private String name;
 
-    @NotEmpty @Size(min = 5, max = 45)
+    @NotEmpty @Size(max = 45)
     private String lastName;
 
     @NotEmpty

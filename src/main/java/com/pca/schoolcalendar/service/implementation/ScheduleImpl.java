@@ -30,7 +30,7 @@ public class ScheduleImpl implements IScheduleService {
     private static final String RESOURCE_NAME = "Schedule";
     private static final String RESOURCE_ACADEMIC_SUBJECT = "AcademicSubject";
     private static final String RESOURCE_NAME_COURSE = "Course";
-    private static final LocalDate INITIAL_PERIOD = LocalDate.of(2022, Month.FEBRUARY, 8);
+    private static final LocalDate INITIAL_PERIOD = LocalDate.of(2022, Month.SEPTEMBER, 1);
     private static final LocalDate FINAL_PERIOD = LocalDate.of(2022, Month.NOVEMBER, 25);
 //    private static final String INITIAL_PERIOD = "2022-02-08";
 //    private static final String FINAL_PERIOD = "2022-11-25";

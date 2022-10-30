@@ -16,6 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -57,6 +58,7 @@ public class CourseImpl implements ICourseService {
     public MessageResponse updateCourseAssignments(Integer id,  List<AssignmentsDTO> assignments) {
         CourseDTO courseDto = this.findById(id);
         Course course = courseMapper.mapToEntity(courseDto);
+        course.setAcademicSubjects(new ArrayList<>());
 
         for (AssignmentsDTO ass: assignments) {
             Optional<AcademicSubject> academicSubjectFound = academicSubjectRepository.findById(ass.getId());
@@ -64,7 +66,6 @@ public class CourseImpl implements ICourseService {
                 throw new ResourceNotFoundException(RESOURCE_NAME_ACADEMIC_SUBJECT, "id", id);
             }
 
-            course.getAcademicSubjects().remove(academicSubjectFound.get());
             if (ass.isCheck()){
                 course.getAcademicSubjects().add(academicSubjectFound.get());
             }
