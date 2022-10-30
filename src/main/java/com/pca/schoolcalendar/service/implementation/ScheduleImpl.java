@@ -15,9 +15,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.time.*;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @AllArgsConstructor
@@ -31,6 +30,10 @@ public class ScheduleImpl implements IScheduleService {
     private static final String RESOURCE_NAME = "Schedule";
     private static final String RESOURCE_ACADEMIC_SUBJECT = "AcademicSubject";
     private static final String RESOURCE_NAME_COURSE = "Course";
+    private static final LocalDate INITIAL_PERIOD = LocalDate.of(2022, Month.FEBRUARY, 8);
+    private static final LocalDate FINAL_PERIOD = LocalDate.of(2022, Month.NOVEMBER, 25);
+//    private static final String INITIAL_PERIOD = "2022-02-08";
+//    private static final String FINAL_PERIOD = "2022-11-25";
 
     @Override
     public MessageResponse save(ScheduleDTO scheduleDto) {
@@ -47,11 +50,12 @@ public class ScheduleImpl implements IScheduleService {
         Schedule schedule = scheduleMapper.mapToEntity(scheduleDto);
         schedule.setCourse(course.get());
         schedule.setAcademicSubject(academicSubject.get());
+        List<Schedule> schedules = this.propagateDates(schedule);
+        scheduleRepository.saveAll(schedules);
 
-        Schedule scheduleSaved = scheduleRepository.save(schedule);
         return new MessageResponse(HttpStatus.CREATED.value(), new Date(),
                 "Registro guardado con éxito",
-                scheduleMapper.mapToDto(scheduleSaved));
+                scheduleMapper.mapToDto(schedule));
     }
 
     @Override
@@ -76,5 +80,44 @@ public class ScheduleImpl implements IScheduleService {
     @Override
     public List<ScheduleDTO> findAll() {
         return null;
+    }
+
+    private List<Schedule> propagateDates(Schedule schedule){
+        List<Schedule> schedulesList = new ArrayList<>();
+        LocalDate initialDate = INITIAL_PERIOD;
+        LocalDate localDate = this.convertToLocalDate(schedule.getStart());
+        int dayOfWeek = this.getDayOfWeek(localDate);
+        do {
+            if(this.getDayOfWeek(initialDate) == dayOfWeek){
+                Date newStartDate = this.convertToDate(schedule.getStart(), initialDate);
+                Date newEndDate = this.convertToDate(schedule.getEnd(), initialDate);
+                schedulesList.add(new Schedule(schedule.getId(), newStartDate, newEndDate, schedule.getCourse(), schedule.getAcademicSubject()));
+                //plus 7 days a week
+                initialDate = initialDate.plusDays(7);
+            }else{
+                //plus 1 day
+                initialDate = initialDate.plusDays(1);
+            }
+        } while (initialDate.isAfter(INITIAL_PERIOD) && initialDate.isBefore(FINAL_PERIOD));
+
+        return schedulesList;
+    }
+
+    private int getDayOfWeek(LocalDate date){
+        DayOfWeek day = date.getDayOfWeek();
+        return day.getValue();
+    }
+
+    private Date convertToDate(Date start, LocalDate initialDate) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(start);
+        calendar.set(initialDate.getYear(), initialDate.getMonthValue() -1, initialDate.getDayOfMonth());
+        return calendar.getTime();
+    }
+
+    private LocalDate convertToLocalDate(Date dateToConvert) {
+        return dateToConvert.toInstant()
+                .atZone(ZoneId.systemDefault())
+                .toLocalDate();
     }
 }
