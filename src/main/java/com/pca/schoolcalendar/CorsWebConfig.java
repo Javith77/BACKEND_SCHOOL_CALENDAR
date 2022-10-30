@@ -10,8 +10,8 @@ public class CorsWebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**")
-                .allowedMethods("GET", "POST", "PUT", "DELETE")
-                .allowedOrigins("http://localhost:4200")
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedOrigins("http://localhost:4200", "https://frontend-schedule-calendar.herokuapp.com/courses")
                 .allowedHeaders("*");
     }
 }
