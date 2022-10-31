@@ -70,8 +70,8 @@ public class CourseImpl implements ICourseService {
                 course.getAcademicSubjects().add(academicSubjectFound.get());
             }
         }
-        Course courseSaved = courseRepository.save(course);
-        return new MessageResponse(HttpStatus.CREATED.value(), new Date(), "Registros actualizados con éxito", courseSaved.getAcademicSubjects());
+        courseRepository.save(course);
+        return new MessageResponse(HttpStatus.CREATED.value(), new Date(), "Registros actualizados con éxito", null);
     }
 
     @Override
