@@ -16,4 +16,11 @@ public interface ScheduleRepository extends CrudRepository<Schedule, Integer> {
             "WHERE co.id = ?1",
             nativeQuery = true)
     List<Schedule> findAllByCourse(Integer idCourse);
+
+    @Query(value = "SELECT COUNT(sc.id) FROM schoolcalendar.schedule sc " +
+            "WHERE sc.fk_id_course = ?1 " +
+            "AND ((?2 >= cast(sc.start_date as timestamp(0)) AND ?2 < cast (sc.end_date as timestamp(0))) " +
+            "OR (?3 > cast(sc.start_date as timestamp(0)) AND ?3 <= cast (sc.end_date as timestamp(0)))) ",
+            nativeQuery = true)
+    Integer countByTimeRange(Integer idCourse, Date start, Date end);
 }
