@@ -51,11 +51,19 @@ public class ScheduleImpl implements IScheduleService {
         schedule.setCourse(course.get());
         schedule.setAcademicSubject(academicSubject.get());
         List<Schedule> schedules = this.propagateDates(schedule);
-        scheduleRepository.saveAll(schedules);
 
-        return new MessageResponse(HttpStatus.CREATED.value(), new Date(),
-                "Registro guardado con éxito",
+        if(this.validateScheduleRange(schedules)){
+            scheduleRepository.saveAll(schedules);
+
+            return new MessageResponse(HttpStatus.CREATED.value(), new Date(),
+                    "Registro guardado con éxito",
+                    scheduleMapper.mapToDto(schedule));
+        }
+
+        return new MessageResponse(HttpStatus.ACCEPTED.value(), new Date(),
+                "El horario seleccionado se encuentra ocupado",
                 scheduleMapper.mapToDto(schedule));
+
     }
 
     @Override
@@ -119,5 +127,18 @@ public class ScheduleImpl implements IScheduleService {
         return dateToConvert.toInstant()
                 .atZone(ZoneId.systemDefault())
                 .toLocalDate();
+    }
+
+    private boolean validateScheduleRange(List<Schedule> schedules) {
+        boolean validRange = true;
+        for (Schedule schedule : schedules) {
+            Integer countData = this.scheduleRepository
+                    .countByTimeRange(schedule.getCourse().getId(), schedule.getStart(), schedule.getEnd());
+            if (countData > 0){
+                validRange = false;
+                break;
+            }
+        }
+        return validRange;
     }
 }
